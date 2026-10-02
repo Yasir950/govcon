@@ -47,6 +47,7 @@ export function SavedPageClient({
   posts,
   comments,
   resources,
+  unavailableResources = [],
   searches,
 }: {
   opportunities: Opportunity[];
@@ -57,6 +58,8 @@ export function SavedPageClient({
   posts: Post[];
   comments: SavedComment[];
   resources: Resource[];
+  // Saved, then deleted / archived / hidden by an admin.
+  unavailableResources?: { id: string; title: string; savedAt: string }[];
   searches: SavedSearch[];
 }) {
   const showToast = useToast();
@@ -97,7 +100,7 @@ export function SavedPageClient({
     { key: "events", label: "Events", count: events.length },
     { key: "posts", label: "Posts", count: posts.length },
     { key: "comments", label: "Comments", count: comments.length },
-    { key: "resources", label: "Resources", count: resources.length },
+    { key: "resources", label: "Resources", count: resources.length + unavailableResources.length },
     { key: "searches", label: "Searches", count: savedSearches.length },
   ];
 
@@ -266,7 +269,7 @@ export function SavedPageClient({
               ))}
 
             {tab === "resources" &&
-              (resources.length === 0 ? (
+              (resources.length === 0 && unavailableResources.length === 0 ? (
                 <p className="meta" style={{ padding: 14 }}>No saved resources yet.</p>
               ) : (
                 <Grid>
@@ -280,6 +283,23 @@ export function SavedPageClient({
                       onUnsave={() => unsave(r.id, () => toggleResourceSaveAction(r.id))}
                     />
                   ))}
+                  {unavailableResources.map((r) =>
+                    removedIds.has(r.id) ? null : (
+                      <div className="saved-item-card is-unavailable" key={r.id}>
+                        <div className="saved-item-link">
+                          <span className="mini-row-title is-name">{r.title}</span>
+                          <span className="meta">No longer available — it was removed from the resource library.</span>
+                        </div>
+                        <button
+                          className="btn btn-outline btn-sm"
+                          onClick={() => unsave(r.id, () => toggleResourceSaveAction(r.id))}
+                          style={{ alignSelf: "flex-start" }}
+                        >
+                          Remove
+                        </button>
+                      </div>
+                    ),
+                  )}
                 </Grid>
               ))}
 

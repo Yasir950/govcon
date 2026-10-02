@@ -1,5 +1,6 @@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ResourceAdminTabs } from "@/components/admin/resources/ResourceAdminTabs";
+import "./resources-admin.css";
 
 export const dynamic = "force-dynamic";
 

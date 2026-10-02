@@ -1,12 +1,13 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { toggleResourceSaveAction } from "@/app/(app)/resources/actions";
+import Link from "next/link";
+import { useEffect, useMemo, useState } from "react";
+import { logResourceSearchAction, toggleResourceSaveAction } from "@/app/(app)/resources/actions";
 import { CategoryChipScroller } from "@/components/CategoryChipScroller";
-import { ModalShell } from "@/components/ModalShell";
+import { RequestResourceModal, ResourceUpgradeModal, ResourceVideoModal } from "@/components/resources/ResourceModals";
 import { useRequireAuth } from "@/lib/landing-hooks";
 import { useToast } from "@/components/toast-provider";
-import { proPlanFeatures, type Resource } from "@/lib/landing-data";
+import type { Resource } from "@/lib/landing-data";
 import { resourceDeliveryLabel } from "@/lib/resources";
 import type { Viewer } from "@/lib/supabase/viewer";
 
@@ -52,6 +53,7 @@ export function ResourcesPageClient({
   const [query, setQuery] = useState("");
   const [watching, setWatching] = useState<Resource | null>(null);
   const [upgrading, setUpgrading] = useState<Resource | null>(null);
+  const [requesting, setRequesting] = useState(false);
 
   const proCount = resources.filter((r) => r.isPro).length;
 
@@ -69,10 +71,27 @@ export function ResourcesPageClient({
         : resources;
   const filtered = base.filter((r) => {
     if (type !== ALL && r.type !== type) return false;
-    if (query && !`${r.title} ${r.description} ${r.type} ${resourceDeliveryLabel(r)}`.toLowerCase().includes(query.toLowerCase()))
+    if (
+      query &&
+      !`${r.title} ${r.description} ${r.type} ${r.category ?? ""} ${r.source ?? ""} ${r.tags.join(" ")} ${resourceDeliveryLabel(r)}`
+        .toLowerCase()
+        .includes(query.toLowerCase())
+    )
       return false;
     return true;
   });
+
+  // Searches of the whole library that find nothing feed content planning
+  // (Admin → Resources → Analytics). Logged once the member stops typing.
+  const noResults = tab === "all" && type === ALL && query.trim().length >= 3 && filtered.length === 0;
+  useEffect(() => {
+    if (!noResults) return;
+    const q = query.trim();
+    const t = setTimeout(() => {
+      logResourceSearchAction(q).catch(() => {});
+    }, 1500);
+    return () => clearTimeout(t);
+  }, [noResults, query]);
 
   // Every kind opens through a route that re-checks access on the server
   // (the page never has the file, URL or video id): file → download route,
@@ -173,22 +192,19 @@ export function ResourcesPageClient({
                   // Pro items show the lock to anyone who can't open them;
                   // a Members item for a signed-out visitor just asks to sign in.
                   const proLocked = r.isPro && r.locked !== null;
+                  const thumb = r.thumbnailUrl ?? (r.kind === "video" ? r.videoThumbnailUrl : null);
                   return (
                     <article className="list-row resource-row" key={r.route}>
                       <span
-                        className={`resource-icon${proLocked ? " is-locked" : r.kind === "video" && r.videoThumbnailUrl ? " has-thumb" : ""}`}
+                        className={`resource-icon${proLocked ? " is-locked" : thumb ? " has-thumb" : ""}`}
                         aria-hidden="true"
-                        style={
-                          !proLocked && r.kind === "video" && r.videoThumbnailUrl
-                            ? { backgroundImage: `url(${r.videoThumbnailUrl})` }
-                            : undefined
-                        }
+                        style={!proLocked && thumb ? { backgroundImage: `url(${thumb})` } : undefined}
                       >
                         {proLocked ? (
                           <svg className="icon icon-sm" aria-label="Locked">
                             <use href="#i-lock" />
                           </svg>
-                        ) : r.kind === "file" ? (
+                        ) : thumb && r.kind !== "video" ? null : r.kind === "file" ? (
                           r.fileExt?.toUpperCase()
                         ) : r.kind === "video" ? (
                           "▶"
@@ -199,10 +215,16 @@ export function ResourcesPageClient({
                         )}
                       </span>
                       <div>
-                        <p className="title">{r.title}</p>
+                        <p className="title">
+                          <Link href={`/${r.route}`} className="resource-title-link">
+                            {r.title}
+                          </Link>
+                        </p>
                         <div className="meta">{r.description}</div>
                         <div>
+                          {r.featured && <span className="tag gold">Featured</span>}
                           <span className="tag">{r.type}</span>
+                          {r.category && <span className="tag gray">{r.category}</span>}
                           <span className="tag gray">{resourceDeliveryLabel(r)}</span>
                           {r.kind === "file" && r.fileUpdatedAt && (
                             <span className="meta resource-updated">
@@ -283,58 +305,16 @@ export function ResourcesPageClient({
                 <button
                   className="btn btn-primary btn-full"
                   style={{ marginTop: 12 }}
-                  onClick={() => requireAuth(() => showToast("Thanks — we'll pass your request to the team."))}
+                  onClick={() => requireAuth(() => setRequesting(true))}
                 >
                   Request a Resource
                 </button>
               </section>
             </aside>
           </div>
-      {watching && (
-        <ModalShell title={watching.title} onClose={() => setWatching(null)} maxWidth={900}>
-          <div className="resource-video-frame">
-            {/* /watch checks access, then redirects to the player. */}
-            <iframe
-              src={`/resources/${watching.id}/watch`}
-              title={watching.title}
-              allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
-            />
-          </div>
-          {watching.description && <p className="meta" style={{ marginTop: 12 }}>{watching.description}</p>}
-        </ModalShell>
-      )}
-      {upgrading && (
-        <ModalShell title="Unlock with Pro" onClose={() => setUpgrading(null)} maxWidth={560}>
-          <div>
-            <span className="tag">{upgrading.type}</span>
-            <span className="tag gray">{resourceDeliveryLabel(upgrading)}</span>
-            <span className="tag red">Pro</span>
-          </div>
-          <p className="title" style={{ marginTop: 10 }}>{upgrading.title}</p>
-          {upgrading.description && <p className="meta">{upgrading.description}</p>}
-          <h3 className="section-title" style={{ marginTop: 16 }}>GovConUnited Pro includes</h3>
-          <ul className="meta" style={{ margin: "8px 0 0", paddingLeft: 18, lineHeight: 1.8 }}>
-            {proPlanFeatures.map((f) => (
-              <li key={f}>{f}</li>
-            ))}
-          </ul>
-          <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginTop: 18 }}>
-            <a href="/billing" className="btn btn-primary">
-              Upgrade to Pro
-            </a>
-            <button className="btn btn-outline" onClick={() => setUpgrading(null)}>
-              Not now
-            </button>
-          </div>
-          {proTrialAvailable && (
-            <p className="meta" style={{ marginTop: 12 }}>
-              Or <a href="/rewards?tab=store">try Pro free for 7 days</a> with 400 Credits.
-            </p>
-          )}
-        </ModalShell>
-      )}
+      {watching && <ResourceVideoModal resource={watching} onClose={() => setWatching(null)} />}
+      {upgrading && <ResourceUpgradeModal resource={upgrading} proTrialAvailable={proTrialAvailable} onClose={() => setUpgrading(null)} />}
+      {requesting && <RequestResourceModal onClose={() => setRequesting(false)} onSent={() => setRequesting(false)} />}
     </>
   );
 }

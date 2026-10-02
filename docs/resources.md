@@ -74,10 +74,42 @@ in a new tab.
   "Request a Resource" card (toast-only stub — there's no request queue
   yet, so it just acknowledges the click).
 
+## Admin → Resources
+
+Migrations: `20261001001200_resource_delivery_kinds.sql`,
+`20261002000000_resource_access_levels.sql`,
+`20261002000100_resource_admin_panel.sql`. Server actions live in
+`src/app/admin/resources/actions.ts`; shared admin reads in
+`src/app/admin/resources/data.ts`; styles in `resources-admin.css`.
+
+| Screen | Route | Notes |
+| --- | --- | --- |
+| Library | `/admin/resources` | Filter by status / category / type / access, search by title. Row actions Edit, Duplicate, Feature, Archive, Delete; bulk Publish, Archive, change category, Delete. Drag to reorder (`resource_reorder`), Featured pinned first. Delete is soft (`deleted_at`), restorable from Trash for 30 days, then purged by `/api/cron/resource-maintenance`. |
+| Editor | `/admin/resources/new`, `/admin/resources/{id}/edit` | All editor fields (title 120, short description 200, Markdown body, type, category, tags, delivery kind, file/URL, thumbnail, source, access, featured, status incl. Scheduled, slug). Replacing a file/link/video keeps the id; the old one is listed under "Earlier versions" (`resource_versions`). The "Audit log" panel reads `resource_audit_log` (written by the `resources_audit` trigger). |
+| Submissions | `/admin/resources/submissions`, `/admin/resources/submissions/{id}` | Pending (oldest first), waiting on member, decided in 30 days. The review page has the full editor plus Approve & publish / Request changes / Reject (reason required). Approve credits the member as source; `points_on_resource` pays 50 XP once per resource. Every outcome notifies the member. |
+| Link Health | `/admin/resources/link-health` | Results of the weekly `/api/cron/resource-link-health` job: error, date found, last check, Recheck, Un-hide; toggle for auto-hide after 2 failed checks. |
+| Analytics | `/admin/resources/analytics?days=7\|30\|all` | Per-resource views, downloads/clicks/plays, saves, unique members; top 10; searches with no results; Request-a-Resource topics; Pro upgrade-modal views → upgrade clicks → now Pro. |
+
+### Member side
+
+- **Submit a resource** (`SubmitResourceForm`): link or file upload
+  (to `resource-files/submissions/{uid}/…`, then type/size/content
+  checked and virus-scanned by `vetResourceUpload`), plus a category
+  picker. Limits: 5 open submissions, duplicate-URL check.
+- **Profile** (`MyResourceSubmissions`, owner only, anchor
+  `#resource-submissions`): Under review / Changes requested (edit and
+  resubmit) / Approved / Not approved, with the admin's note.
+- **Detail page** `/resources/{slug}`: full description, tags, source;
+  records a view.
+- **Saved**: saved items that were deleted or hidden show as "No longer
+  available".
+- Analytics events: `/resources/{id}/download|open|watch` record a
+  download / click / play; no-result library searches, Request a
+  Resource, and the Pro upgrade modal are logged too.
+
 ## Known gaps
 
-- No admin/CMS flow for adding resources — new rows require a migration.
-- "Request a Resource" doesn't persist anything; it's a toast
-  acknowledgment only.
-- Saved-resource state is `localStorage`-only, not server-persisted per
-  account.
+- None tracked for the admin panel. The database migrations above must
+  be applied before deploying this code (and this code deployed once
+  they are — older builds query `resources` with table-wide SELECT,
+  which the access-levels migration revoked).

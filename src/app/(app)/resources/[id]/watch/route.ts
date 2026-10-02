@@ -16,6 +16,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     return resourceAccessError(request, error, { redirectToSignIn: false });
   }
 
+  // Counts toward the resource's downloads / clicks / plays (Analytics).
+  await supabase.rpc("record_resource_event", { p_id: id, p_kind: "watch" });
   const res = NextResponse.redirect(videoEmbedUrl(target.video_provider, target.video_id));
   res.headers.set("Cache-Control", "no-store");
   return res;

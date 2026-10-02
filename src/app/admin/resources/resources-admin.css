@@ -1,0 +1,305 @@
+/* Admin → Resources (Library, Editor, Submissions, Link Health, Analytics).
+   Lives inside .opps-app.admin-shell, so the --o-* tokens are in scope. */
+
+.ra-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 0 0 18px;
+}
+
+.ra-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.ra-view-switch {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.ra-filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.ra-filters .field {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.ra-filters .select {
+  flex: 0 1 180px;
+  min-width: 0;
+}
+
+.ra-bulk {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid var(--o-blue);
+  border-radius: 10px;
+  background: var(--o-blue-soft);
+}
+.ra-bulk .select {
+  max-width: 220px;
+}
+
+.ra-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+.ra-table-wrap.card {
+  padding: 0;
+}
+.ra-table {
+  min-width: 860px;
+}
+.ra-table td {
+  vertical-align: middle;
+}
+.ra-num {
+  text-align: right !important;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.ra-table tr.is-dragging {
+  opacity: 0.45;
+}
+.ra-table tr.is-drop-target td {
+  box-shadow: inset 0 2px 0 var(--o-blue);
+}
+.ra-handle {
+  cursor: grab;
+  color: var(--o-muted);
+  user-select: none;
+  letter-spacing: -2px;
+}
+.ra-handle.is-disabled {
+  cursor: default;
+  opacity: 0.3;
+}
+.ra-title {
+  color: var(--o-ink);
+  font-weight: 500;
+  text-decoration: none;
+}
+.ra-title:hover {
+  color: var(--o-blue);
+  text-decoration: underline;
+}
+.ra-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: 4px;
+}
+.ra-badges:empty {
+  display: none;
+}
+.ra-badge-red {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 9px;
+  border-radius: 20px;
+  background: #fde8e8;
+  color: #a12222;
+  font-size: 0.7425rem;
+  text-decoration: none;
+}
+a.ra-badge-red:hover {
+  text-decoration: underline;
+}
+.ra-text-red {
+  color: #a12222;
+}
+.ra-row-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+.ra-danger {
+  color: #a12222 !important;
+  border-color: #f0b9b9 !important;
+}
+.ra-danger.btn-primary,
+.ra-danger-solid {
+  background: #c62828 !important;
+  border-color: #c62828 !important;
+  color: #fff !important;
+}
+.ra-url {
+  max-width: 420px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Editor */
+.ra-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.ra-span {
+  grid-column: 1 / -1;
+}
+.ra-label-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ra-fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
+.ra-radios {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 6px;
+}
+.ra-thumb-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+.ra-thumb {
+  width: 128px;
+  height: 72px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--o-line);
+  background: #f7f9fd;
+}
+.ra-slug {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.ra-slug .field {
+  flex: 1;
+  min-width: 0;
+}
+.ra-edit-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 18px;
+  align-items: start;
+}
+
+/* History / audit */
+.ra-history {
+  display: grid;
+  gap: 14px;
+}
+.ra-history-list {
+  list-style: none;
+  margin: 8px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 10px;
+  max-height: 420px;
+  overflow-y: auto;
+}
+.ra-history-list li {
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--o-line);
+  font-size: 0.86rem;
+}
+.ra-history-list li:last-child {
+  border-bottom: 0;
+}
+.ra-history-main {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+.ra-history-what {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Submissions */
+.ra-section .section-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.ra-review {
+  margin-bottom: 16px;
+}
+.ra-review-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+.ra-review-warn {
+  margin: 10px 0 0;
+  border-radius: 8px;
+  padding: 6px 10px;
+}
+.ra-review-note {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--o-line);
+}
+
+/* Analytics */
+.admin-stat-card strong {
+  display: block;
+  font-size: 1.35rem;
+  margin-top: 4px;
+}
+.ra-top-list {
+  margin: 8px 0 0;
+  padding-left: 22px;
+  display: grid;
+  gap: 8px;
+}
+.ra-top-list li {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 12px;
+}
+.ra-two-col {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+@media (max-width: 900px) {
+  .ra-edit-grid,
+  .ra-two-col {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 600px) {
+  .ra-form {
+    grid-template-columns: 1fr;
+  }
+  .ra-filters .select {
+    flex: 1 1 100%;
+  }
+}

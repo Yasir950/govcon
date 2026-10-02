@@ -31,6 +31,7 @@ import { safeExternalHref, socialProfileHref } from "@/lib/url";
 import { ConnectButton } from "@/components/network/ConnectButton";
 import { ProfileRecommendationsPanel } from "@/components/network/ProfileRecommendationsPanel";
 import { AchievementsSection, ProfilePointsStrip } from "@/components/points/ProfilePoints";
+import { MyResourceSubmissions, type MyResourceSubmission } from "@/components/resources/MyResourceSubmissions";
 import { PROFILE_FRAMES, PROFILE_THEMES, type PointsProfile } from "@/lib/points-types";
 import { RelationshipActions } from "@/components/network/RelationshipActions";
 import { AvatarStack, PeopleListPanel, PeopleNames, PeopleRows } from "@/components/network/PeopleStack";
@@ -329,6 +330,7 @@ export function MemberProfilePageClient({
   boostedProfileIds = [],
   boostedCompanyIds = [],
   skillEndorsements = null,
+  resourceSubmissions = [],
 }: {
   profile: PublicProfile;
   profileCompany: Company | null;
@@ -365,6 +367,8 @@ export function MemberProfilePageClient({
   boostedCompanyIds?: string[];
   // Skill endorsements from connections (one-tap; see SkillEndorsements).
   skillEndorsements?: ProfileSkillEndorsements | null;
+  // Owner-only: their Submit-a-resource submissions ("Under review" etc.).
+  resourceSubmissions?: MyResourceSubmission[];
 }) {
   const router = useRouter();
   const showToast = useToast();
@@ -2246,6 +2250,8 @@ export function MemberProfilePageClient({
               </section>
 
               <AchievementsSection points={pointsProfile} isOwner={isEditableOwnProfile} />
+
+              {isEditableOwnProfile && viewer && <MyResourceSubmissions viewerId={viewer.id} submissions={resourceSubmissions} />}
 
               <ProfileRecommendationsPanel
                 profile={{ id: profile.id, name: profile.name, avatarUrl: profile.avatarUrl, headline: profile.headline }}

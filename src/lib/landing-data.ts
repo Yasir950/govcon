@@ -27,6 +27,14 @@ export interface Resource {
   // Only when the viewer can open it (a YouTube thumbnail contains the id).
   videoThumbnailUrl: string | null;
   videoDurationSeconds: number | null;
+  slug: string;
+  featured: boolean;
+  category: string | null;
+  tags: string[];
+  source: string | null;
+  // Card image: custom upload or the PDF's first page (withheld for a
+  // locked Pro item).
+  thumbnailUrl: string | null;
 }
 
 export interface OpportunityContact {

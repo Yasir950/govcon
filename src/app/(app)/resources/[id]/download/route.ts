@@ -24,6 +24,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
     .createSignedUrl(file.path, SIGNED_URL_SECONDS, { download: file.name });
   if (signError || !signed) return new NextResponse("Couldn't open that file.", { status: 500 });
 
+  // Counts toward the resource's downloads / clicks / plays (Analytics).
+  await supabase.rpc("record_resource_event", { p_id: id, p_kind: "download" });
   const res = NextResponse.redirect(signed.signedUrl);
   res.headers.set("Cache-Control", "no-store");
   return res;

@@ -109,6 +109,7 @@ export function ResourceForm({
   types: initialTypes,
   underReview = false,
   backHref = "/admin/resources",
+  stayAfterSave = false,
 }: {
   id: string | null;
   initial?: ResourceFormInitial;
@@ -118,6 +119,9 @@ export function ResourceForm({
   // Approve / Reject / Request changes, not here.
   underReview?: boolean;
   backHref?: string;
+  // Reviewing a submission: stay on it after saving so the admin can then
+  // Approve / Reject / Request changes.
+  stayAfterSave?: boolean;
 }) {
   const router = useRouter();
   const showToast = useToast();
@@ -273,7 +277,9 @@ export function ResourceForm({
 
     setBusy(null);
     showToast(warning ?? (id ? "Saved" : "Created"));
-    router.push(backHref);
+    setFile(null);
+    setThumb(null);
+    if (!stayAfterSave) router.push(backHref);
     router.refresh();
   }
 

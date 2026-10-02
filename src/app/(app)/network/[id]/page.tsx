@@ -13,6 +13,7 @@ import {
   getProfileRecommendations,
   getPublicProfile,
   recordProfileView,
+  getMyResourceSubmissions,
 } from "@/lib/supabase/queries";
 import { getViewer } from "@/lib/supabase/viewer";
 import { getOwnClearanceVerification } from "@/lib/supabase/clearance-verification";
@@ -76,6 +77,7 @@ export default async function MemberProfilePage({
     boostedProfileIds,
     boostedCompanyIds,
     skillEndorsements,
+    resourceSubmissions,
   ] = await Promise.all([
     viewer ? getConnectionStates(viewer.id) : Promise.resolve(new Map()),
     getPeopleAlsoViewed(profile.id, viewer?.id ?? null, 3, members),
@@ -89,6 +91,7 @@ export default async function MemberProfilePage({
     getActiveBoostIds("profile"),
     getActiveBoostIds("company"),
     profile.skills.length > 0 ? fetchSkillEndorsementsAction(profile.id) : Promise.resolve(null),
+    isOwnProfile ? getMyResourceSubmissions() : Promise.resolve([]),
   ]);
   // Most recently followed first; ids of companies not in the public
   // directory (pending/removed) simply drop out.
@@ -148,6 +151,7 @@ export default async function MemberProfilePage({
       boostedProfileIds={[...boostedProfileIds]}
       boostedCompanyIds={[...boostedCompanyIds]}
       skillEndorsements={skillEndorsements}
+      resourceSubmissions={resourceSubmissions}
       initialEditingDetails={isOwnProfile && !isPublicPreview && editParam === "details"}
     />
   );

@@ -12,6 +12,8 @@ export async function GET(request: Request, { params }: { params: Promise<{ id: 
   const target = data as { kind: string; url: string | null } | null;
   if (error || target?.kind !== "link" || !target.url) return resourceAccessError(request, error, { redirectToSignIn: true });
 
+  // Counts toward the resource's downloads / clicks / plays (Analytics).
+  await supabase.rpc("record_resource_event", { p_id: id, p_kind: "open" });
   const res = NextResponse.redirect(target.url);
   res.headers.set("Cache-Control", "no-store");
   res.headers.set("Referrer-Policy", "no-referrer");

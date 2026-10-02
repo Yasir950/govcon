@@ -1,3 +1,4 @@
+import type { MyResourceSubmission } from "@/components/resources/MyResourceSubmissions";
 import { createClient } from "@/lib/supabase/server";
 import type { TrackingStage } from "@/lib/bid-tracker-plan";
 import { normalizeJobClearance } from "@/lib/clearance";
@@ -995,19 +996,25 @@ export async function getJobCategories(): Promise<JobCategory[]> {
 // only to viewers who can open each one.
 export async function getResources(): Promise<Resource[]> {
   const supabase = await createClient();
-  const [{ data, error }, { data: library, error: libraryError }] = await Promise.all([
+  const [{ data, error }, { data: library, error: libraryError }, { data: categories }] = await Promise.all([
     supabase
       .from("resources")
       .select(
-        "id, slug, title, type, description, access, is_pro, kind, file_ext, file_size, file_uploaded_at, scan_status, video_provider, video_duration_seconds, sort_order",
+        "id, slug, title, type, description, access, is_pro, kind, file_ext, file_size, file_uploaded_at, scan_status, video_provider, video_duration_seconds, sort_order, featured, category_id, tags, source",
       )
       .or(PUBLISHED_FILTER())
+      .is("deleted_at", null)
+      .is("auto_hidden_at", null)
+      // Featured items are pinned to the top; then the admin's drag order.
+      .order("featured", { ascending: false })
       .order("sort_order"),
     supabase.rpc("resource_library"),
+    supabase.from("resource_categories").select("id, name"),
   ]);
   if (error) throw error;
   if (libraryError) throw libraryError;
   const extras = new Map((library ?? []).map((l) => [l.id, l]));
+  const categoryName = new Map((categories ?? []).map((c) => [c.id, c.name]));
 
   return (
     (data ?? [])
@@ -1034,6 +1041,12 @@ export async function getResources(): Promise<Resource[]> {
           videoProvider: r.kind === "video" ? (r.video_provider as Resource["videoProvider"]) : null,
           videoThumbnailUrl: r.kind === "video" ? (extra?.video_thumbnail_url ?? null) : null,
           videoDurationSeconds: r.kind === "video" ? r.video_duration_seconds : null,
+          slug: r.slug,
+          featured: r.featured,
+          category: r.category_id ? (categoryName.get(r.category_id) ?? null) : null,
+          tags: r.tags ?? [],
+          source: r.source,
+          thumbnailUrl: extra?.thumbnail_url ?? null,
         };
       })
   );
@@ -4300,6 +4313,39 @@ export async function getResourceSaveIds(profileId: string): Promise<Set<string>
     .eq("profile_id", profileId);
   if (error) throw error;
   return new Set((data ?? []).map((r) => r.resource_id));
+}
+
+// Saved resources that were deleted, archived or hidden since — /saved
+// lists them as "no longer available" instead of silently dropping them.
+export async function getUnavailableSavedResources(): Promise<{ id: string; title: string; savedAt: string }[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("my_unavailable_saved_resources");
+  if (error) throw error;
+  return (data ?? []).map((r) => ({ id: r.resource_id, title: r.title, savedAt: r.saved_at }));
+}
+
+// The signed-in member's own Submit-a-resource submissions.
+export async function getMyResourceSubmissions(): Promise<MyResourceSubmission[]> {
+  const supabase = await createClient();
+  const { data, error } = await supabase.rpc("my_resource_submissions");
+  if (error) {
+    console.error("[resources] my_resource_submissions failed", error);
+    return [];
+  }
+  return (data ?? []).map((r) => ({
+    id: r.id,
+    slug: r.slug,
+    title: r.title,
+    type: r.type,
+    categoryId: r.category_id,
+    kind: r.kind,
+    description: r.description,
+    url: r.url,
+    status: r.submission_status as MyResourceSubmission["status"],
+    reviewNote: r.review_note,
+    createdAt: r.created_at,
+    isLive: r.is_live,
+  }));
 }
 
 export async function getDiscussionSaveIds(profileId: string): Promise<Set<string>> {

@@ -20,6 +20,7 @@ import {
   getResourceSaveIds,
   getSavedComments,
   getSavedSearches,
+  getUnavailableSavedResources,
   getViewerArchivedOpportunities,
 } from "@/lib/supabase/queries";
 import { getViewer } from "@/lib/supabase/viewer";
@@ -85,6 +86,7 @@ async function SavedContent({ viewer }: { viewer: Viewer }) {
     resourceSaveIds,
     savedSearches,
     savedComments,
+    unavailableResources,
   ] = await Promise.all([
     // By id rather than the general list, which caps federal notices.
     labeled("tracked opportunities", getTrackedOpportunityIds(viewer.id).then((ids) => getOpportunitiesByIds([...ids]))),
@@ -105,6 +107,7 @@ async function SavedContent({ viewer }: { viewer: Viewer }) {
     labeled("resource saves", getResourceSaveIds(viewer.id)),
     labeled("saved searches", getSavedSearches(viewer.id)),
     labeled("saved comments", getSavedComments(viewer.id)),
+    labeled("unavailable resources", getUnavailableSavedResources()),
   ]);
 
   return (
@@ -117,6 +120,7 @@ async function SavedContent({ viewer }: { viewer: Viewer }) {
       posts={posts.filter((p) => discussionSaveIds.has(p.id))}
       comments={savedComments}
       resources={resources.filter((r) => resourceSaveIds.has(r.id))}
+      unavailableResources={unavailableResources}
       searches={savedSearches}
     />
   );
