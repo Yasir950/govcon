@@ -1,0 +1,101 @@
+<!--
+  Source of truth for the "Confirm signup" auth email, pushed to the live
+  Supabase project via the Management API
+  (PATCH /v1/projects/{ref}/config/auth, mailer_templates_confirmation_content)
+  -- see docs/email.md. Supabase Auth sends this email directly (GoTrue's
+  own mailer), completely separate from this app's own Resend-based
+  notification emails (src/lib/email.ts); this file is what actually
+  renders live, not just a reference copy, so keep it in sync by re-running
+  that PATCH after any edit here.
+
+  Structure/spacing/typography matches crewupapp's own confirm-signup.html
+  (same parent company's other product) -- 560px card, logo header,
+  heading + intro paragraph, button-in-its-own-table, expiry note with a
+  plain-text fallback URL, a "didn't request this" disclaimer, and a
+  distinctly-styled footer with a tagline + copyright. Recolored to
+  GovConUnited's own brand red `#ed1c24` (the same red used for the site's
+  primary CTA buttons, see `--o-red`/`.nav-join`/`.btn.brand-red` in
+  src/app/landing.css) rather than crewupapp's slate.
+
+  Link now uses {{ .TokenHash }} against our own /auth/confirm route
+  (matching crewupapp's own pattern), not {{ .ConfirmationURL }} (which
+  points straight at Supabase's verify endpoint). {{ .RedirectTo }} is the
+  emailRedirectTo signUpAction already set to
+  "<origin>/auth/confirm?next=<next>", so appending token_hash/type gives
+  the full confirm-page URL. This fixes an intermittent real bug: a bare
+  GET link to Supabase's verify endpoint gets silently consumed by email
+  link-scanners (Outlook Safe Links, Defender, etc.) before the recipient
+  ever clicks, burning the one-time token and showing them "invalid or
+  expired" on a link they hadn't used yet. /auth/confirm renders an inert
+  page with a button; only a real click submits the Server Action that
+  calls verifyOtp, so a scanner's GET can no longer burn the token. See
+  src/app/(auth)/auth/confirm/page.tsx and confirmEmailAction in
+  src/app/(auth)/actions.ts.
+-->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Confirm your GovConUnited account</title>
+  </head>
+  <body style="margin:0;padding:0;background-color:#f3f7ff;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f3f7ff;padding:32px 16px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="560" cellpadding="0" cellspacing="0" style="max-width:560px;width:100%;">
+            <!-- Header -->
+            <tr>
+              <td style="background-color:#ed1c24;border-radius:16px 16px 0 0;padding:20px 32px;">
+                <table role="presentation" cellpadding="0" cellspacing="0">
+                  <tr>
+                    <td style="background-color:#ffffff;border-radius:8px;padding:8px 14px;">
+                      <img src="https://govconunited.com/Logos/GCU%20Logotype%20Black.png" alt="GovConUnited" height="20" style="display:block;height:20px;width:auto;border:0;" />
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- Body -->
+            <tr>
+              <td style="background-color:#ffffff;padding:40px;">
+                <h1 style="margin:0 0 12px;font-size:22px;line-height:1.3;color:#07173f;">
+                  Welcome to GovConUnited
+                </h1>
+                <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#475569;">
+                  You&rsquo;re one click away from joining a network of government contractors,
+                  subcontractors, and industry professionals. Confirm your email address to
+                  activate your account.
+                </p>
+                <table role="presentation" cellpadding="0" cellspacing="0" align="center" style="margin:0 auto 24px;">
+                  <tr>
+                    <td style="border-radius:10px;background-color:#ed1c24;" align="center">
+                      <a href="{{ .RedirectTo }}&token_hash={{ .TokenHash }}&type=signup"
+                         style="display:inline-block;padding:14px 36px;font-size:15px;font-weight:bold;color:#ffffff;text-decoration:none;border-radius:10px;">
+                        Confirm Email Address
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+                <p style="margin:0;font-size:13px;line-height:1.6;color:#94a3b8;">
+                  Didn&rsquo;t create a GovConUnited account? You can safely ignore this email.
+                </p>
+              </td>
+            </tr>
+            <!-- Footer -->
+            <tr>
+              <td style="background-color:#f8fafc;border-radius:0 0 16px 16px;border-top:1px solid #e2e8f0;padding:24px 40px;" align="center">
+                <p style="margin:0 0 4px;font-size:12px;color:#94a3b8;">
+                  GovConUnited — The professional network connecting government contractors with opportunities, partners, and resources.
+                </p>
+                <p style="margin:0;font-size:12px;color:#94a3b8;">
+                  &copy; 2026 GovConUnited, LLC. A Robb Industrial Co. All rights reserved.
+                </p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>

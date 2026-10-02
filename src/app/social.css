@@ -1,0 +1,125 @@
+/* Team & social: streak buddies, celebrations, skill endorsements and
+   company leaderboards. Builds on habits.css / member-help.css pieces. */
+
+.social-card .section-title { display: inline-flex; align-items: center; gap: 8px; }
+.social-note { margin: 8px 0 0; font-size: 0.8rem; line-height: 1.45; }
+.social-note svg { vertical-align: -2px; }
+.social-fineprint { margin: 10px 0 0; font-size: 0.74rem; line-height: 1.45; }
+
+/* People rows with an action on the right. */
+.social-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.social-row { display: flex; align-items: center; gap: 8px; min-width: 0; padding: 4px 0; }
+.social-row-person { flex: 1; min-width: 0; display: flex; align-items: flex-start; gap: 8px; text-decoration: none; color: inherit; }
+.social-row-person > span:last-child { min-width: 0; display: flex; flex-direction: column; }
+.social-row-person .meta { font-size: 0.74rem; overflow-wrap: anywhere; display: inline-flex; align-items: center; gap: 3px; }
+.social-row > .btn, .social-row > .link-btn, .social-row > .habit-match-actions { flex-shrink: 0; }
+.social-done { flex-shrink: 0; display: inline-flex; align-items: center; gap: 4px; font-size: 0.78rem; font-weight: 600; color: #15803d; }
+
+/* --------------------------------------------------------- buddies */
+
+.social-buddy { display: grid; gap: 10px; }
+.social-buddy-head { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.social-buddy-text { display: grid; gap: 2px; min-width: 0; }
+.social-buddy-streak { display: inline-flex; align-items: center; gap: 5px; font-weight: 700; color: #c2410c; font-size: 0.92rem; }
+.social-days { display: flex; flex-wrap: wrap; gap: 6px; }
+.social-day-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px 3px 4px;
+  border-radius: 999px;
+  border: 1px solid var(--o-line, #dbe5ef);
+  font-size: 0.78rem;
+  color: var(--o-muted, #667386);
+}
+.social-day-dot > span:first-child {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 2px solid #b6c2d1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.social-day-dot.is-done { color: #166534; border-color: #cdebd8; background: #f3fbf6; }
+.social-day-dot.is-done > span:first-child { background: #16a34a; border-color: #16a34a; }
+.social-buddy .social-note { margin: 0; }
+
+.social-picker { display: grid; gap: 8px; }
+.social-search { position: relative; display: block; }
+.social-search svg { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); color: var(--o-muted, #667386); }
+.social-search .field { padding-left: 30px; width: 100%; }
+
+/* ------------------------------------------------------ endorsements */
+
+.social-skill-list { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+.social-skill {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--o-line, #eef2f6);
+  min-width: 0;
+}
+.social-skill:last-child { border-bottom: 0; }
+.social-skill-name { flex: 1; min-width: 0; display: inline-flex; align-items: center; gap: 8px; font-weight: 600; color: var(--o-ink, #17243a); overflow-wrap: anywhere; }
+.social-skill-count {
+  flex-shrink: 0;
+  min-width: 22px;
+  padding: 1px 7px;
+  border-radius: 999px;
+  background: var(--o-blue-soft, #eaf6fd);
+  color: var(--o-blue, #0071bc);
+  font-size: 0.74rem;
+  text-align: center;
+}
+.social-skill-endorsers { display: inline-flex; flex-shrink: 0; }
+.social-skill-endorsers > * + * { margin-left: -6px; }
+.social-skill-endorsers > * { box-shadow: 0 0 0 2px #fff; border-radius: 50%; }
+.social-endorse {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--o-line, #cfdbe7);
+  background: #fff;
+  color: var(--o-ink, #17243a);
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.social-endorse:hover { border-color: var(--o-blue, #0071bc); color: var(--o-blue, #0071bc); }
+.social-endorse.is-on { background: #f3fbf6; border-color: #cdebd8; color: #166534; }
+.social-endorse:disabled { opacity: 0.6; cursor: default; }
+
+/* ------------------------------------------------------- companies */
+
+.social-logo { width: 28px; height: 28px; border-radius: 6px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; }
+.social-top-badges { display: flex; flex-wrap: wrap; gap: 6px; margin: 4px 0 10px; }
+.social-top-company {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, #fff6d6, #ffe58a);
+  color: #7a5200;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+.social-winners { margin-top: 12px; display: grid; gap: 4px; }
+.social-verify { display: grid; gap: 8px; margin-top: 10px; justify-items: start; }
+.social-verify .label { width: 100%; }
+.social-verify .field { width: 100%; }
+
+.social-name { font-weight: 700; color: var(--o-ink, #17243a); text-decoration: none; overflow-wrap: anywhere; }
+.social-name:hover { text-decoration: underline; }
+.social-facts { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; font-size: 0.82rem; }
+.social-facts div { display: grid; gap: 1px; }
+.social-facts dt { color: var(--o-muted, #667386); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; }
+.social-facts dd { margin: 0; color: var(--o-ink, #17243a); font-weight: 600; }

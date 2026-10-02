@@ -1,0 +1,33 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm -v)",
+      "mcp__claude_ai_Supabase__apply_migration",
+      "mcp__claude_ai_Supabase__generate_typescript_types",
+      "Bash(node -e ' *)",
+      "Bash(npx tsc *)",
+      "mcp__claude_ai_Supabase__get_advisors",
+      "Bash(npx next *)",
+      "mcp__claude_ai_Supabase__execute_sql",
+      "Bash(node \"C:/Users/Yasir/AppData/Local/Temp/claude/d--robb-govconunited/6de4b9f8-4db5-4add-8b30-8566a126d53b/scratchpad/signup_comment_test.mjs\")",
+      "Bash(EMAIL_B=\"368yasir+cmtb1789990417452@gmail.com\" SLUG=\"zzyzx-comment-test-post\" node \"C:/Users/Yasir/AppData/Local/Temp/claude/d--robb-govconunited/6de4b9f8-4db5-4add-8b30-8566a126d53b/scratchpad/verify_comment_likes.mjs\")",
+      "Bash(EMAIL_B=\"368yasir+cmtb1789990417452@gmail.com\" SLUG=\"zzyzx-comment-test-post\" node \"C:/Users/Yasir/AppData/Local/Temp/claude/d--robb-govconunited/6de4b9f8-4db5-4add-8b30-8566a126d53b/scratchpad/verify_relevant_order.mjs\")",
+      "Bash(EMAIL_B=\"368yasir+cmtb1789990417452@gmail.com\" SLUG=\"zzyzx-comment-test-post\" node \"C:/Users/Yasir/AppData/Local/Temp/claude/d--robb-govconunited/6de4b9f8-4db5-4add-8b30-8566a126d53b/scratchpad/verify_relevant_order2.mjs\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:3000/ --max-time 5)",
+      "Bash(node -e \"console.log\\(require\\('fs'\\).existsSync\\('node_modules/playwright'\\)\\)\")",
+      "Bash(node -e \"console.log\\(require.resolve\\('playwright'\\)\\)\")",
+      "Bash(npm ls *)",
+      "Bash(ls \"/c/Users/Yasir/AppData/Local/Temp/claude/d--robb-govconunited/6de4b9f8-4db5-4add-8b30-8566a126d53b/scratchpad\" 2>&1 | head -30)",
+      "Read(//c/Users/Yasir/AppData/Local/Temp/claude/d--robb-govconunited/6de4b9f8-4db5-4add-8b30-8566a126d53b/scratchpad/**)",
+      "Bash(cat package.json | grep -i playwright; ls \"/c/Users/Yasir/AppData/Local/Temp/claude/d--robb-govconunited/6de4b9f8-4db5-4add-8b30-8566a126d53b/scratchpad/node_modules\" 2>&1 | head -5)",
+      "Read(//c/Users/Yasir/AppData/Local/Temp/claude/d--robb-govconunited/6de4b9f8-4db5-4add-8b30-8566a126d53b/scratchpad/node_modules/**)",
+      "Bash(node verify_comment_image.mjs)",
+      "Bash(EMAIL=\"368yasir+cmtimg1789991895272@gmail.com\" SLUG=\"zzyzx-comment-image-test\" node verify_comment_image2.mjs)",
+      "Bash(mkdir -p \"\\(shell\\)\" \"[slug]/\\(shell\\)\")",
+      "Bash(mv page.tsx \"\\(shell\\)/page.tsx\")",
+      "Bash(mv new *)",
+      "Bash(mv \"[slug]/page.tsx\" \"[slug]/\\(shell\\)/page.tsx\")",
+      "Bash(mv \"[slug]/manage\" \"[slug]/\\(shell\\)/manage\")"
+    ]
+  }
+}

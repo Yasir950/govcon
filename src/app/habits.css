@@ -1,0 +1,184 @@
+/* Daily work habits on Home: opportunity matches + Question of the day.
+   Reuses the points card pieces (segments, sweep strip, reward text). */
+
+.habit-card { scroll-margin-top: 90px; }
+.habit-card .section-title { display: inline-flex; align-items: center; gap: 8px; }
+.habit-empty { margin: 0; font-size: 0.86rem; line-height: 1.45; display: grid; gap: 10px; justify-items: start; }
+.habit-empty p { margin: 0; }
+
+/* ---------------------------------------------------------- matches */
+
+.habit-match-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.habit-match {
+  border: 1px solid var(--o-line, #dbe5ef);
+  border-radius: 10px;
+  background: #fff;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.habit-match:hover, .habit-match.is-open { border-color: #b9d7ee; }
+.habit-match.is-save { background: #f3fbf6; border-color: #cdebd8; }
+.habit-match.is-dismiss:not(.is-open) { background: #f6f8fb; }
+.habit-match.is-dismiss:not(.is-open) .habit-match-title strong { color: var(--o-muted, #667386); }
+.habit-match-head {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+.habit-match-state {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border-radius: 50%;
+  border: 2px solid #b6c2d1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+.is-save .habit-match-state { background: #16a34a; border-color: #16a34a; }
+.is-dismiss .habit-match-state { background: #94a3b8; border-color: #94a3b8; }
+.habit-match-title { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 3px; font-size: 0.86rem; line-height: 1.35; }
+.habit-match-title strong {
+  color: var(--o-ink, #17243a);
+  font-weight: 600;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+}
+.habit-match-title .meta { font-size: 0.74rem; overflow-wrap: anywhere; }
+.habit-match-chevron { flex-shrink: 0; margin-top: 2px; color: var(--o-muted, #667386); transition: transform 0.15s ease; }
+.is-open .habit-match-chevron { transform: rotate(180deg); }
+.habit-match-body { padding: 0 10px 10px 40px; display: grid; gap: 8px; font-size: 0.8rem; }
+.habit-match-facts { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 0; }
+.habit-match-facts dt { color: var(--o-muted, #667386); }
+.habit-match-facts dd { margin: 0; color: var(--o-ink, #17243a); overflow-wrap: anywhere; }
+.habit-match-reasons { display: flex; flex-wrap: wrap; gap: 4px; }
+.habit-match-link { display: inline-flex; align-items: center; gap: 4px; font-weight: 600; color: var(--o-blue, #0071bc); text-decoration: none; }
+.habit-match-link:hover { text-decoration: underline; }
+.habit-match-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.habit-match-actions .btn { display: inline-flex; align-items: center; gap: 4px; }
+
+/* ------------------------------------------------ question of the day */
+
+.habit-question { margin: 0 0 10px; font-weight: 600; font-size: 0.92rem; line-height: 1.4; color: var(--o-ink, #17243a); }
+.habit-poll-options { display: grid; gap: 6px; }
+.habit-poll-option {
+  text-align: left;
+  padding: 9px 12px;
+  border: 1px solid var(--o-line, #dbe5ef);
+  border-radius: 10px;
+  background: #fff;
+  font: inherit;
+  font-size: 0.85rem;
+  color: var(--o-ink, #17243a);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.habit-poll-option:hover:not(:disabled) { border-color: #9fcbea; background: var(--o-blue-soft, #eaf6fd); }
+.habit-poll-option:disabled { opacity: 0.6; cursor: default; }
+.habit-poll-results { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.habit-poll-results li:not(.habit-poll-total) {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: #f6f8fb;
+  overflow: hidden;
+  font-size: 0.85rem;
+}
+.habit-poll-bar { position: absolute; inset: 0 auto 0 0; background: #e2edf7; border-radius: inherit; transition: width 0.5s ease; }
+.habit-poll-results li.is-mine .habit-poll-bar { background: #cfe6f7; }
+.habit-poll-label, .habit-poll-pct { position: relative; }
+.habit-poll-label { flex: 1; min-width: 0; display: inline-flex; align-items: center; gap: 4px; overflow-wrap: anywhere; }
+.is-mine .habit-poll-label { font-weight: 700; color: var(--o-blue-dark, #004f86); }
+.habit-poll-pct { font-weight: 700; font-size: 0.8rem; color: var(--o-ink, #17243a); }
+.habit-poll-total { font-size: 0.75rem; text-align: right; }
+.habit-credit { margin: 8px 0 0; font-size: 0.75rem; }
+.habit-suggest-toggle { margin-top: 10px; display: inline-flex; align-items: center; gap: 4px; font-size: 0.8rem; }
+.habit-suggest { margin-top: 12px; display: grid; gap: 10px; }
+.habit-suggest-options { border: 0; margin: 0; padding: 0; display: grid; gap: 6px; }
+.habit-suggest-options legend { margin-bottom: 4px; }
+.habit-suggest-option { display: flex; gap: 6px; align-items: center; }
+.habit-suggest-option .field { flex: 1; min-width: 0; }
+.habit-suggest-options .link-btn { justify-self: start; display: inline-flex; align-items: center; gap: 4px; }
+
+/* ------------------------------------------------------ bid tracker */
+
+.trk-bid { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin: -4px 0 10px; font-size: 0.75rem; }
+.trk-bid:empty { display: none; }
+.trk-chip { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 2px 8px; font-weight: 700; background: #f1f5f9; color: #475569; }
+.trk-chip.is-due-soon { background: #fff4e5; color: #9a5b00; }
+.trk-chip.is-past { background: #f1f5f9; color: #64748b; }
+.trk-chip.is-bid { background: #e6f6f4; color: #0f766e; }
+.trk-chip.is-won { background: #e8f8f0; color: #14764b; }
+.trk-chip.is-lost { background: #fdecec; color: #b42318; }
+/* Free shows 4 stats, Pro 6 (win rate etc.). */
+@media (min-width: 681px) {
+  .opps-app .trk-stats { grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); }
+}
+.opps-app .trk-stats > .trk-stat-locked {
+  display: block; border: 1px dashed var(--o-line); border-radius: 12px; padding: 12px 16px;
+  text-decoration: none; background: transparent;
+}
+.opps-app .trk-stats > .trk-stat-locked strong { font-size: 1rem; color: var(--o-muted); }
+.opps-app .trk-stats > .trk-stat-locked span { color: #9a5b00; font-weight: 700; }
+
+/* Free plan active-bid meter. */
+.opps-app .trk-meter { margin-bottom: 16px; display: grid; gap: 6px; max-width: 520px; }
+.opps-app .trk-meter-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px; font-size: 0.85rem; color: var(--o-ink); }
+
+/* Card extras: reminders, amendment alerts, sharing, Pro lock. */
+.opps-app .trk-extras { display: grid; gap: 6px; margin-top: 10px; padding-top: 8px; border-top: 1px solid var(--o-line); font-size: 0.78rem; color: var(--o-muted); }
+.opps-app .trk-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px; margin: 0; }
+.opps-app .trk-row .link-btn { font-size: 0.78rem; }
+.opps-app .trk-inline-form { justify-content: flex-start; }
+.opps-app .trk-inline-form .field,
+.opps-app .trk-inline-form .select { flex: 1 1 120px; min-width: 0; padding: 4px 8px; font-size: 0.8rem; }
+.opps-app .trk-check { justify-content: flex-start; cursor: pointer; }
+.opps-app .trk-pro-lock { margin: 0; line-height: 1.5; }
+.opps-app .trk-share { display: grid; gap: 6px; }
+.opps-app .trk-share-list { display: flex; flex-wrap: wrap; gap: 4px; }
+.trk-chip-x { border: 0; background: none; padding: 0 0 0 2px; cursor: pointer; color: inherit; font-weight: 700; line-height: 1; }
+.opps-app .trk-task-due { border: 0; background: transparent; color: var(--o-muted); font-size: 0.72rem; max-width: 118px; }
+
+/* Pro settings panel. */
+.opps-app .trk-settings { margin-bottom: 16px; display: grid; gap: 16px; }
+.opps-app .trk-settings-block { display: grid; gap: 6px; }
+.opps-app .trk-settings-block .meta { margin: 0; }
+.opps-app .trk-stage-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; max-width: 460px; }
+.opps-app .trk-stage-list li { display: flex; align-items: center; gap: 6px; }
+.opps-app .trk-stage-list .field { flex: 1; min-width: 0; padding: 4px 8px; }
+.opps-app .trk-stage-list input[type="color"] { width: 28px; height: 28px; padding: 0; border: 1px solid var(--o-line); border-radius: 6px; background: none; }
+
+/* Bids shared with the viewer. */
+.opps-app .trk-shared-section { margin-top: 24px; }
+.opps-app .trk-shared-section > .meta { margin: 4px 0 12px; }
+.opps-app .trk-shared-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.opps-app .trk-shared { border-top-color: var(--o-blue); }
+.opps-app .trk-shared.is-highlighted { box-shadow: 0 0 0 3px var(--o-blue-soft); }
+.opps-app .trk-shared .meta { margin: 0 0 8px; }
+.opps-app .trk-shared-notes { white-space: pre-wrap; font-size: 0.8rem; margin: 0 0 8px; color: var(--o-ink); }
+.opps-app .trk-shared-tasks { list-style: none; margin: 0 0 8px; padding: 0; font-size: 0.8rem; display: grid; gap: 2px; }
+.opps-app .trk-shared-tasks .is-done { color: var(--o-muted); text-decoration: line-through; }
+
+/* Upgrade prompt on the 6th active bid. */
+.bid-limit-modal { max-width: 460px; }
+.bid-limit-modal > .meta { margin: 0 0 12px; }
+.bid-limit-lead { margin: 0 0 6px; font-weight: 700; }
+.bid-limit-list { margin: 0 0 16px; padding-left: 20px; display: grid; gap: 4px; }
+.bid-limit-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+
+.bid-track-card .meta { margin: 6px 0 10px; }

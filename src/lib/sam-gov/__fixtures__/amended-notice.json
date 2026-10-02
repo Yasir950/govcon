@@ -1,0 +1,28 @@
+[
+  {
+    "noticeId": "TESTFIX0001AAAA",
+    "title": "Cloud Migration Support Services",
+    "solicitationNumber": "W912DY-26-R-0042",
+    "fullParentPathName": "DEPT OF DEFENSE.DEPT OF THE ARMY.MISSION AND INSTALLATION CONTRACTING COMMAND",
+    "type": "Solicitation",
+    "postedDate": "2026-09-01",
+    "responseDeadLine": "2026-10-29T17:00:00-04:00",
+    "naicsCode": "541512",
+    "classificationCode": "D302",
+    "typeOfSetAside": "SBA",
+    "typeOfSetAsideDescription": "Total Small Business Set-Aside",
+    "active": "Yes",
+    "description": "AMENDMENT 1: The response deadline has been extended two weeks. The Army seeks a qualified small business to support migration of legacy systems to a FedRAMP-authorized cloud environment.",
+    "uiLink": "https://sam.gov/opp/TESTFIX0001AAAA/view",
+    "placeOfPerformance": {
+      "city": { "name": "Fort Belvoir" },
+      "state": { "code": "VA" },
+      "zip": "22060",
+      "country": { "code": "USA" }
+    },
+    "pointOfContact": [
+      { "fullName": "Jane Contracting Officer", "email": "jane.co@army.mil", "phone": "703-555-0100", "type": "primary" }
+    ],
+    "resourceLinks": ["https://sam.gov/opp/TESTFIX0001AAAA/download/sow.pdf", "https://sam.gov/opp/TESTFIX0001AAAA/download/amendment1.pdf"]
+  }
+]

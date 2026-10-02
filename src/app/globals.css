@@ -1,0 +1,237 @@
+/* Site-wide heading weight — h1 a bit heavier than the rest so it still
+   reads as the page's primary title, everything below it (h2-h6) at one
+   consistent weight rather than each section picking its own. Bare-tag
+   selectors so any more specific rule that doesn't touch font-weight still
+   inherits this instead of the browser's bold default; the handful of
+   headings that previously hardcoded a different weight were normalized
+   to match (see landing.css). Helvetica Neue has no true 600 (Semibold)
+   face — only Medium (500) and Bold (700) are self-hosted below — so h1's
+   600 renders via the browser's own synthetic weight interpolation
+   between those two, not a dedicated cut.
+*/
+/* Same reasoning as the weight rule below: without an explicit base size,
+   a heading with no page-specific override (e.g. network-page-head h1)
+   silently falls back to the browser's UA default instead of the app's
+   actual title scale — h1 matches .page-head h1's size, h2 matches
+   .section-title's, so the two conventions agree instead of drifting. */
+h1 {
+  font-size: 1.9125rem;
+  font-weight: 600;
+}
+h2 {
+  font-size: 1.2425rem;
+}
+h3 {
+  font-size: 1.1rem;
+}
+h4 {
+  font-size: 1rem;
+}
+h5,
+h6 {
+  font-size: 0.9rem;
+}
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 500;
+}
+
+/* Self-hosted Helvetica Neue (public/helvetica-neue-5/) — most non-Apple
+   OSes don't have this font installed, so relying on the bare font-family
+   name alone falls back to whatever generic sans-serif the browser has.
+   These @font-face rules make "Helvetica Neue" actually resolve to the
+   real typeface everywhere, on every OS. */
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueUltraLight.otf") format("opentype");
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueUltraLightItalic.otf") format("opentype");
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueThin.otf") format("opentype");
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueThinItalic.otf") format("opentype");
+  font-weight: 200;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueLight.otf") format("opentype");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueLightItalic.otf") format("opentype");
+  font-weight: 300;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueRoman.otf") format("opentype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueItalic.ttf") format("truetype");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueMedium.otf") format("opentype");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueMediumItalic.otf") format("opentype");
+  font-weight: 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueBold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueBoldItalic.otf") format("opentype");
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueHeavy.otf") format("opentype");
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueHeavyItalic.otf") format("opentype");
+  font-weight: 800;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueBlack.otf") format("opentype");
+  font-weight: 900;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Helvetica Neue";
+  src: url("/helvetica-neue-5/HelveticaNeueBlackItalic.otf") format("opentype");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+html {
+  height: 100%;
+  /* Reserves the vertical scrollbar's width up front so pages that start
+     short (a loading skeleton) and become tall once real content streams
+     in don't shift everything sideways the instant the scrollbar appears. */
+  scrollbar-gutter: stable;
+  /* body already has its own max-width/overflow-x guard below, but real
+     mobile browsers (Chrome/Samsung Internet on Android in particular)
+     treat <html>, not <body>, as the actual scrolling/clipping root — an
+     element that overflows the viewport width can still widen the whole
+     page and leave a blank strip alongside the real content unless this
+     is set here too, not just on body. */
+  overflow-x: hidden;
+}
+
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: var(--foreground);
+  background: var(--background);
+  font-family: "Helvetica Neue";
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+}
+
+/* Route-level loading skeletons (see every src/app/**\/loading.tsx).
+   Deliberately chrome-agnostic — a loading.tsx can't know whether the
+   destination page will render the signed-in dashboard shell or the
+   signed-out marketing header/footer, so it never tries to fake either
+   one (which would visibly mismatch and swap on the real page's first
+   paint); it's just a generic shimmering content placeholder. */
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -400px 0;
+  }
+  100% {
+    background-position: 400px 0;
+  }
+}
+
+.skeleton-block {
+  border-radius: 10px;
+  background: linear-gradient(90deg, #eef1f6 25%, #e4e9f1 37%, #eef1f6 63%);
+  background-size: 800px 100%;
+  animation: skeleton-shimmer 1.4s ease-in-out infinite;
+}

@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Sophia Williams">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ED1C24"/><stop offset="1" stop-color="#7a0f13"/></linearGradient></defs>
+  <circle cx="100" cy="100" r="100" fill="url(#g)"/>
+  <text x="100" y="122" text-anchor="middle" font-family="Manrope, Arial, sans-serif" font-weight="800" font-size="72" fill="#fff">SW</text>
+</svg>

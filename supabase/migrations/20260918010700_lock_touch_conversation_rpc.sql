@@ -1,0 +1,11 @@
+-- Same class of issue this project already fixed for sync_post_vote_count()
+-- and handle_new_user(): touch_conversation_last_message() only needs to
+-- run as the messages-insert trigger (which executes with the function
+-- owner's privileges regardless of grants) — the security advisor flagged
+-- it as directly callable via /rest/v1/rpc/touch_conversation_last_message
+-- by anon/authenticated, which would let anyone bump any conversation's
+-- last_message_at without sending a real message at all. Revoking from
+-- PUBLIC (not just anon/authenticated, which inherit from it and would
+-- otherwise still have it) closes that off; the trigger keeps working
+-- since triggers aren't subject to these grants.
+revoke execute on function public.touch_conversation_last_message() from public, anon, authenticated;

@@ -1,0 +1,142 @@
+/* Teaming: member-to-member help (teaming board, contract wins, capability
+   reviews, mentoring). Lives inside .opps-app, so form controls, buttons
+   and cards come from landing.css; reward chips reuse points.css. */
+
+.help-page { display: grid; gap: 16px; }
+.help-page-head h1 { margin: 0; font-size: 1.6rem; color: var(--o-ink, #17243a); }
+.help-page-head p { margin: 4px 0 0; }
+
+.help-tabs { display: flex; gap: 4px; flex-wrap: wrap; border-bottom: 1px solid var(--o-line, #dbe5ef); }
+.help-tabs a {
+  padding: 10px 14px;
+  font-weight: 600;
+  color: var(--o-muted, #667386);
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+}
+.help-tabs a:hover { color: var(--o-ink, #17243a); }
+.help-tabs a.is-active { color: var(--o-blue, #0071bc); border-bottom-color: var(--o-blue, #0071bc); }
+
+.help-tab { display: grid; gap: 14px; }
+.help-heading { margin: 6px 0 0; font-size: 1rem; color: var(--o-ink, #17243a); }
+.help-heading .meta { font-weight: 400; font-size: 0.82rem; }
+.help-empty { margin: 0; font-size: 0.88rem; }
+
+/* ------------------------------------------------------------ intro */
+
+.help-intro { display: flex; justify-content: space-between; gap: 16px 24px; flex-wrap: wrap; }
+.help-intro > div:first-child { flex: 1 1 340px; }
+.help-intro p { margin: 6px 0 0; line-height: 1.5; }
+.help-intro-rewards { display: grid; gap: 6px; align-content: start; font-size: 0.84rem; color: var(--o-ink, #17243a); }
+.help-intro-rewards > span { display: flex; gap: 10px; justify-content: space-between; align-items: baseline; }
+.help-reward { white-space: nowrap; font-size: 0.8rem; }
+.help-intro-rewards .help-reward { margin-left: 0; }
+
+/* ------------------------------------------------------ list + cards */
+
+.help-subnav { display: flex; align-items: center; gap: 6px 14px; flex-wrap: wrap; }
+.help-subnav a { font-weight: 600; color: var(--o-muted, #667386); text-decoration: none; padding: 4px 0; border-bottom: 2px solid transparent; }
+.help-subnav a.is-active { color: var(--o-ink, #17243a); border-bottom-color: var(--o-blue, #0071bc); }
+.help-subnav-title { font-weight: 700; color: var(--o-ink, #17243a); }
+.help-subnav .btn { margin-left: auto; display: inline-flex; align-items: center; gap: 4px; }
+
+.help-filters { display: flex; gap: 8px; flex-wrap: wrap; }
+.help-search { position: relative; flex: 1 1 260px; display: flex; }
+.help-search svg { position: absolute; left: 11px; top: 50%; transform: translateY(-50%); color: var(--o-muted, #667386); pointer-events: none; }
+.help-search .field { flex: 1; min-width: 0; padding-left: 32px; }
+
+.help-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.help-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); align-items: start; }
+.help-item { display: grid; gap: 10px; }
+.help-item.is-closed { opacity: 0.8; }
+.help-item-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+.help-item-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 10px; flex-wrap: wrap; }
+.help-item-head .section-title { display: inline-flex; align-items: center; gap: 8px; margin: 0; }
+.help-item-title { margin: 0; font-size: 1rem; line-height: 1.35; color: var(--o-ink, #17243a); overflow-wrap: anywhere; }
+.help-body { margin: 0; font-size: 0.9rem; line-height: 1.5; white-space: pre-line; overflow-wrap: anywhere; color: #334155; }
+.help-note { margin: 0; padding: 8px 10px; border-radius: 8px; background: #fff8e6; color: #7a5200; font-size: 0.85rem; }
+
+.help-person { display: flex; gap: 10px; align-items: center; min-width: 0; }
+.help-person > a { flex-shrink: 0; }
+.help-person-text { display: grid; gap: 1px; min-width: 0; }
+.help-person-name { font-weight: 700; color: var(--o-ink, #17243a); text-decoration: none; }
+.help-person-name:hover { text-decoration: underline; }
+.help-person-text .meta { font-size: 0.78rem; overflow-wrap: anywhere; }
+
+.help-facts { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0; font-size: 0.82rem; }
+.help-facts div { display: grid; gap: 1px; }
+.help-facts dt { color: var(--o-muted, #667386); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; }
+.help-facts dd { margin: 0; color: var(--o-ink, #17243a); font-weight: 600; overflow-wrap: anywhere; }
+
+.help-actions { display: flex; align-items: center; gap: 8px 10px; flex-wrap: wrap; }
+.help-actions .btn { display: inline-flex; align-items: center; gap: 5px; }
+.help-actions .help-reward { margin-left: 0; }
+.help-status { display: inline-flex; align-items: center; gap: 5px; font-size: 0.84rem; font-weight: 600; color: var(--o-muted, #667386); }
+.help-status.is-done { color: #15803d; }
+.help-ok { color: #15803d; }
+
+.help-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 999px;
+  padding: 3px 9px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  white-space: nowrap;
+  background: #f1f5f9;
+  color: #475569;
+}
+.help-pill.is-pending { background: #fff4d6; color: #8a5a00; }
+.help-pill.is-verified { background: #dcfce7; color: #166534; }
+.help-pill.is-false { background: #fee2e2; color: #991b1b; }
+
+.help-form { display: grid; gap: 12px; }
+.help-form .section-title { margin: 0; }
+.help-form p { margin: 0; }
+.help-inline-form { display: grid; gap: 8px; }
+.help-textarea-sm { min-height: 72px; }
+.opps-app .help-page .select { min-width: 0; }
+
+.help-sublist { list-style: none; margin: 0; padding: 0; display: grid; gap: 0; }
+.help-sublist > li { display: grid; gap: 8px; padding: 12px 0; border-top: 1px solid var(--o-line, #dbe5ef); }
+.help-sublist > li:first-child { border-top: 0; padding-top: 4px; }
+
+.help-file {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--o-blue, #0071bc);
+  text-decoration: none;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+.help-file:hover { text-decoration: underline; }
+
+.help-review { display: grid; gap: 2px 0; margin: 0; font-size: 0.88rem; }
+.help-review dt { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.03em; color: var(--o-muted, #667386); margin-top: 6px; }
+.help-review dt:first-child { margin-top: 0; }
+.help-review dd { margin: 0; white-space: pre-line; overflow-wrap: anywhere; color: #334155; line-height: 1.5; }
+
+/* --------------------------------------------------------- mentoring */
+
+.help-locked { display: flex; gap: 12px; align-items: flex-start; }
+.help-locked > svg { flex-shrink: 0; margin-top: 3px; color: var(--o-muted, #667386); }
+.help-locked .section-title { margin: 0; }
+.help-locked p { margin: 4px 0 0; }
+.help-tags { display: flex; flex-wrap: wrap; gap: 5px; }
+.help-tag { border-radius: 999px; padding: 2px 9px; background: #eef5fc; color: #0b4f8a; font-size: 0.76rem; font-weight: 600; }
+.help-session { display: grid; gap: 6px; }
+.help-session-head { display: flex; align-items: center; gap: 6px 10px; flex-wrap: wrap; font-size: 0.86rem; }
+.help-log-form { grid-template-columns: minmax(0, 160px) minmax(0, 110px) minmax(0, 1fr); align-items: end; }
+.help-log-form .help-actions { grid-column: 1 / -1; }
+
+@media (max-width: 640px) {
+  .help-intro-rewards > span { justify-content: flex-start; flex-wrap: wrap; }
+  .help-subnav .btn { margin-left: 0; }
+  .help-log-form { grid-template-columns: 1fr 1fr; }
+  .help-log-topic { grid-column: 1 / -1; }
+  .help-page .form-grid { grid-template-columns: 1fr; }
+}
